@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:task/blocs/login_bloc.dart';
 import 'package:task/components/custom_buttom_nota.dart';
+import 'package:task/screens/login_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key}) : super(key: key);
   final colortext = const Color.fromRGBO(92, 157, 254, 1);
+  final _blocController = LoginBloc();
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,7 @@ class CustomDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.only(left: 10, right: 10, top: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -88,7 +91,11 @@ class CustomDrawer extends StatelessWidget {
             color: Colors.blue.shade100,
             height: 70,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                _blocController.logout();
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
+              },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: const [

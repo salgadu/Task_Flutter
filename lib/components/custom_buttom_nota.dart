@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:task/controllers/task_controller.dart';
+import 'package:task/models/task_model.dart';
 
 class CustomButtomNota extends StatelessWidget {
-  const CustomButtomNota({Key? key}) : super(key: key);
+  CustomButtomNota({Key? key}) : super(key: key);
+  final taskcontroller = TaskController();
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {},
+    return GestureDetector(
+      onTap: () async {
+        print("jcbicwhcqi");
+        final abcd = await taskcontroller.getTask();
+        print(abcd.itens.first.nameItem);
+        //final abcde = abcd.itens.first;
+        // print(abcde.nameItem.toString());
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: 5),
         decoration: BoxDecoration(

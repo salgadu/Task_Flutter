@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "857068090850",
+    "firebase_url": "https://task-2e93b-default-rtdb.firebaseio.com",
+    "project_id": "task-2e93b",
+    "storage_bucket": "task-2e93b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857068090850:android:d6cdb19612d36fd87675bb",
+        "android_client_info": {
+          "package_name": "br.com.rodrigo.salgado.task"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857068090850-atud8o6lefdes4qtvboqbvk0edpq8dil.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbG_eS4aOh-DgEaQmcnK6OUTjyL--PhVc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "857068090850-atud8o6lefdes4qtvboqbvk0edpq8dil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
