@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:task/blocs/login_bloc.dart';
+import 'package:task/blocs/modify_notas_bloc.dart';
 import 'package:task/components/custom_buttom_nota.dart';
+import 'package:task/controllers/task_controller.dart';
+import 'package:task/models/buttom_model.dart';
+import 'package:task/models/task_model.dart';
 import 'package:task/screens/login_screen.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
   CustomDrawer({Key? key}) : super(key: key);
+
+  @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   final colortext = const Color.fromRGBO(92, 157, 254, 1);
+
   final _blocController = LoginBloc();
+
+  final taskContoller = TaskController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,21 +87,41 @@ class CustomDrawer extends StatelessWidget {
             ],
           ),
           Expanded(
-              child: ListView(
-            children: [CustomButtomNota()],
-          )),
+              child: StreamBuilder<List<ButtonModel>>(
+                  stream: taskContoller.getButttom(),
+                  builder: (context, listtask) {
+                    if (!listtask.hasData) {
+                      return CircularProgressIndicator();
+                    }
+                    return ListView(
+                      children: listtask.data!
+                          .map((e) => CustomButtomNota(
+                                idButtom: e.getIdButton,
+                                nomeButtom: e.getnameButton,
+                              ))
+                          .toList(),
+                    );
+                  })),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.blue[50],
+              textStyle: TextStyle(),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0)),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              String? name = await showModal(context, null, "Criar");
+              if (name != null && name != "") {
+                taskContoller.createNota(name: name);
+              }
+            },
             child: Icon(
               Icons.add,
               color: colortext,
+              size: 24.0,
             ),
           ),
           Container(
-            color: Colors.blue.shade100,
             height: 70,
             child: InkWell(
               onTap: () {
@@ -124,5 +157,44 @@ class CustomDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<String?> showModal(
+      BuildContext context, String? name, String modalName) async {
+    final _editController =
+        TextEditingController(text: name != null ? name : "");
+    late String retorno;
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(modalName),
+        content: const Text('Você esta editando!'),
+        actions: <Widget>[
+          TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Digite o texto',
+            ),
+            controller: _editController,
+          ),
+          Row(
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  print(_editController.text);
+                  Navigator.pop(context, 'OK');
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+    return _editController.text;
   }
 }
