@@ -35,18 +35,32 @@ class _CustomTitleItemState extends State<CustomTitleItem> {
               onChanged: (value) {
                 widget.item.setCheck = value!;
                 itemController.updateItem(item: widget.item);
+                for (int i = 0; i < widget.item.itens.length; i++) {
+                  widget.item.itens[i].setCheck = value;
+                  taskController.updateSubItem(subItem: widget.item.itens[i]);
+                }
               },
             ),
-            Text(
-              widget.item.nameItem,
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
             SizedBox(
-              width: 150,
+              width: 10,
+            ),
+            Container(
+              width: 180,
+              child: Text(
+                widget.item.nameItem,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 18.0,
+                  decoration: widget.item.check
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
+              ),
             ),
             IconButton(
               onPressed: () async {
-                String? name = await showModal(null, "Criar");
+                String? name = await showModal(null, "Criar Subitem");
                 if (name != null && name != "") {
                   taskController.createSubItem(
                       item: widget.item, textSubItem: name);
@@ -68,20 +82,19 @@ class _CustomTitleItemState extends State<CustomTitleItem> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text(modalName),
-        content: const Text('Você esta editando!'),
         actions: <Widget>[
           TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Digite o texto',
+              hintText: 'Nome item',
             ),
             controller: _editController,
           ),
           Row(
             children: [
               TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
+                onPressed: () => Navigator.pop(context, 'Cancelar'),
+                child: const Text('Cancelar'),
               ),
               TextButton(
                 onPressed: () {

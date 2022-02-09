@@ -3,9 +3,15 @@ import 'dart:convert';
 class TaskModel {
   late String _idNota;
   late String _nameNota;
+  bool _isEmpty = false;
   late final List<ItemModel> _item = [];
 
+  TaskModel() {
+    _isEmpty = true;
+  }
+
   TaskModel.fromJson(Map mapNota, String key) {
+    _isEmpty = false;
     _idNota = key;
     _nameNota = mapNota['name'];
     if (mapNota['item'] != null) {
@@ -20,6 +26,7 @@ class TaskModel {
 
   String get idNota => _idNota;
   String get nameNota => _nameNota;
+  bool get isEmpty => _isEmpty;
   List<ItemModel> get itens => _item;
 
   set setName(String name) => _nameNota = name;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task/components/custom_subitem.dart';
 import 'package:task/components/custom_title_item.dart';
-import 'package:task/controllers/task_controller.dart';
 import 'package:task/controllers/task_controller_subitem.dart';
 import 'package:task/models/task_model.dart';
 
@@ -26,6 +25,7 @@ class _ItemState extends State<Item> {
       child: Column(
         children: <Widget>[
           ExpansionTile(
+              backgroundColor: Color.fromRGBO(232, 238, 255, 1),
               title: CustomTitleItem(
                 item: widget.itemModel,
               ),

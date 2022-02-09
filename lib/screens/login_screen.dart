@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:task/blocs/login_bloc.dart';
 import 'package:task/global/constants.dart';
 import 'package:task/screens/home_screen.dart';
+import 'package:task/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -87,8 +88,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
                         border: OutlineInputBorder(),
-                        labelText: 'Email',
+                        hintText: 'Email',
                       ),
                       validator: (text) {
                         if (text!.isEmpty) {
@@ -100,10 +103,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _emailController,
                       onChanged: _loginBloc.email,
                     ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     TextFormField(
                       decoration: InputDecoration(
+                        fillColor: Colors.white,
+                        filled: true,
                         border: OutlineInputBorder(),
-                        labelText: 'Senha',
+                        hintText: 'Senha',
                       ),
                       validator: (text) {
                         if (text!.isEmpty) {
@@ -116,14 +124,41 @@ class _LoginScreenState extends State<LoginScreen> {
                       onChanged: _loginBloc.password,
                       obscureText: true,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (_formkey.currentState!.validate()) {
-                          _loginBloc.Submit();
-                        }
-                      },
-                      child: Text("LOGIN"),
-                    )
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 55,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formkey.currentState!.validate()) {
+                            _loginBloc.Submit();
+                          }
+                        },
+                        child: Text("LOGIN"),
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        const Text(
+                          'NÃO POSSUI UMA CONTA?',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        TextButton(
+                          child: const Text(
+                            'CADASTRA-SE',
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterScreen()),
+                            );
+                          },
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    ),
                   ],
                 )),
           );

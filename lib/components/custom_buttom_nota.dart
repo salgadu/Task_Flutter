@@ -1,17 +1,22 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:task/blocs/modify_notas_bloc.dart';
 import 'package:task/controllers/task_controller.dart';
+import 'package:task/models/buttom_model.dart';
 import 'package:task/models/task_model.dart';
 
 class CustomButtomNota extends StatefulWidget {
   final String idButtom;
   final String nomeButtom;
+  final List<ButtonModel>? listButton;
 
-  CustomButtomNota({
-    Key? key,
-    required this.idButtom,
-    required this.nomeButtom,
-  }) : super(key: key);
+  CustomButtomNota(
+      {Key? key,
+      required this.idButtom,
+      required this.nomeButtom,
+      this.listButton})
+      : super(key: key);
 
   @override
   State<CustomButtomNota> createState() => _CustomButtomNotaState();
@@ -27,6 +32,9 @@ class _CustomButtomNotaState extends State<CustomButtomNota> {
       onTap: () async {
         taskController.updateLastButton(idLastButton: widget.idButtom);
       },
+      onLongPress: () {
+        showModal(context, widget.nomeButtom, "Editar ou Excluir Nota");
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: 7, left: 10, right: 10),
         decoration: BoxDecoration(
@@ -39,7 +47,7 @@ class _CustomButtomNotaState extends State<CustomButtomNota> {
           ),
         ),
         height: 50,
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.center,
         child: Text(
           widget.nomeButtom,
           style: TextStyle(
@@ -50,5 +58,55 @@ class _CustomButtomNotaState extends State<CustomButtomNota> {
         ),
       ),
     );
+  }
+
+  Future<String?> showModal(
+      BuildContext context, String? name, String modalName) async {
+    final _editController =
+        TextEditingController(text: name != null ? name : "");
+    late String retorno;
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(modalName),
+        actions: <Widget>[
+          TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Editar',
+            ),
+            controller: _editController,
+          ),
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  taskController.deleteLastButton();
+                  taskController.deleteItem(id: widget.idButtom);
+                  Navigator.pop(context, 'Excluir');
+                },
+                child: const Text(
+                  'Excluir',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancelar'),
+                child: const Text('Cancelar'),
+              ),
+              TextButton(
+                onPressed: () {
+                  taskController.updateNota(
+                      name: widget.nomeButtom, id: widget.idButtom);
+                  Navigator.pop(context, 'OK');
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+    return _editController.text;
   }
 }

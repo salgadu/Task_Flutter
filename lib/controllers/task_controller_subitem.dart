@@ -1,8 +1,13 @@
+import 'package:task/blocs/login_bloc.dart';
 import 'package:task/data/firebase_data_subitem.dart';
 import 'package:task/models/task_model.dart';
 
 class TaskControllerSubItem {
-  final firebaseData = FirebaseDataSubItem();
+  late final FirebaseDataSubItem firebaseData;
+
+  TaskControllerSubItem() {
+    firebaseData = FirebaseDataSubItem();
+  }
 
   void updateSubItem({required TaskSubItemModel subItem}) {
     firebaseData.updateSubItem(

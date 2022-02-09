@@ -17,7 +17,7 @@ class _SubItemState extends State<SubItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 40),
+      margin: EdgeInsets.only(left: 60),
       child: GestureDetector(
         onLongPress: () async {
           //Todo para editar
@@ -37,12 +37,18 @@ class _SubItemState extends State<SubItem> {
                 taskControler.updateSubItem(subItem: widget.subItemModel);
               },
             ),
-            Text(
-              widget.subItemModel.nameSubItem,
-              style: TextStyle(
-                decoration: widget.subItemModel.check
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
+            Container(
+              width: 200,
+              child: Text(
+                widget.subItemModel.nameSubItem,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 14,
+                  decoration: widget.subItemModel.check
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none,
+                ),
               ),
             ),
           ],
@@ -57,21 +63,20 @@ class _SubItemState extends State<SubItem> {
     await showDialog<String>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Editar'),
-        content: const Text('Você esta editando!'),
+        title: const Text('Editar Subitem'),
         actions: <Widget>[
           TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'Digite o texto',
+              hintText: 'Nome subitem',
             ),
             controller: _editController,
           ),
           Row(
             children: [
               TextButton(
-                onPressed: () => Navigator.pop(context, 'Cancel'),
-                child: const Text('Cancel'),
+                onPressed: () => Navigator.pop(context, 'Cancelar'),
+                child: const Text('Cancelar'),
               ),
               TextButton(
                 onPressed: () {
